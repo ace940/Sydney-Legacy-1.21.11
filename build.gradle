@@ -1,0 +1,123 @@
+plugins {
+	id 'java'
+	id 'fabric-loom' version '1.13.6'
+	id 'com.gradleup.shadow' version '9.0.0-beta4'
+	id 'com.github.gmazzo.buildconfig' version '5.5.1'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.mod_id
+}
+
+repositories {
+	maven {
+		name = "meteor-maven"
+		url = "https://maven.meteordev.org/releases"
+	}
+	maven {
+		name = "meteor-maven"
+		url = "https://maven.meteordev.org"
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Lombok wired up explicitly: the io.freefair.lombok plugin stopped running
+	// the annotation processor after the Gradle/Loom upgrade, which silently
+	// removed every generated getter/constructor.
+	compileOnly 'org.projectlombok:lombok:1.18.36'
+	annotationProcessor 'org.projectlombok:lombok:1.18.36'
+	annotationProcessor 'net.fabricmc:sponge-mixin:0.17.4+mixin.0.8.7'
+
+	implementation(shadow("org.reflections:reflections:0.10.2"))
+	implementation(shadow("meteordevelopment:discord-ipc:1.1"))
+}
+
+def getCommitHash = { ->
+	def gitProcess = 'git rev-parse HEAD'.execute()
+	gitProcess.waitFor()
+	return gitProcess.text.trim().take(10)
+}
+
+def getRevisionCount = { ->
+	def gitProcess = 'git rev-list --all --count'.execute()
+	gitProcess.waitFor()
+	return gitProcess.text.trim()
+}
+
+
+buildConfig {
+	className("BuildConstants")
+	packageName(group)
+
+	buildConfigField(String, 'MOD_NAME', project.mod_name)
+	buildConfigField(String, 'MOD_ID', project.mod_id)
+	buildConfigField(String, 'MOD_VERSION', project.mod_version)
+	buildConfigField(String, 'MINECRAFT_VERSION', project.minecraft_version)
+	buildConfigField(String, 'GIT_HASH', getCommitHash())
+	buildConfigField(String, 'GIT_REVISION', getRevisionCount())
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+	// Porting aid. javac skips the annotation-processing phase altogether when a
+	// structural error is present, which silently removes every Lombok-generated
+	// member and buries the real errors in a cascade. Forcing it to run to
+	// GENERATE keeps Lombok active while the 1.21.11 port is still incomplete.
+	it.options.compilerArgs += [
+		'-Xmaxerrs', '10000',
+		'-Xmaxwarns', '10000',
+		'-XDshould-stop.ifError=GENERATE'
+	]
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/sydney.accesswidener")
+
+	// Loom 1.13 disables the legacy Mixin annotation processor by default, which
+	// means no refmap is generated and every named target (e.g. "attack") fails
+	// to resolve at runtime against intermediary names. Turn it back on and pin
+	// the refmap name the mixin config already declares.
+	mixin {
+		useLegacyMixinAp = true
+		defaultRefmapName = "sydney-refmap.json"
+	}
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}"}
+	}
+}
+
+shadowJar {
+	configurations = [project.configurations.shadow]
+	archiveClassifier.set("dev")
+}
+
+remapJar {
+	dependsOn(shadowJar)
+	inputFile = tasks.shadowJar.archiveFile
+}
