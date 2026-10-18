@@ -172,17 +172,12 @@ public class Renderer3D implements IMinecraft {
     }
 
     public static boolean isFrustumVisible(Box box) {
-        // 1.21.11 replaced the always-present world frustum with the captured one that the
-        // debug renderer fills in. Capture it on demand and, because the modern pipeline is
-        // camera-relative, accept either space before culling something that is on screen.
+        // The captured frustum remains in world coordinates. It is only used for culling;
+        // vertex data is converted to camera-relative coordinates later in this renderer.
         var frustum = mc.worldRenderer.getCapturedFrustum();
-        if (frustum == null) {
-            mc.worldRenderer.captureFrustum();
-            frustum = mc.worldRenderer.getCapturedFrustum();
-        }
         if (frustum == null) return true;
 
-        return frustum.isVisible(box) || frustum.isVisible(cameraTransform(box));
+        return frustum.isVisible(box);
     }
 
     private static Vec3d cameraTransform(Vec3d vec3d) {
