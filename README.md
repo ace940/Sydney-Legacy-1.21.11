@@ -35,7 +35,7 @@ SYDNEY_JVM_ARGS="-Dfoo=bar" python3 scripts/launch-sydney-1.21.11.py   # extra J
 
 ## Config
 
-`configs/6b6t-ultimate.json` is a fully tuned 6b6t profile (88 modules: AutoCrystal, KillAura,
+`configs/6b6t-ultimate.json` is a fully tuned 6b6t profile (65 modules: AutoCrystal, KillAura,
 Surround floor/feet placement, AutoTrap, HoleFill, MaceAura, AutoTotem, AutoArmor chestplate and
 elytra swapping, SpeedMine, Velocity, Reach, plus the full ESP/Chams/NameTags/Tracers/HoleESP
 visual stack and a custom font).

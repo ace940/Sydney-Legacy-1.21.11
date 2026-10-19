@@ -74,7 +74,11 @@ public final class StressHarness implements IMinecraft {
             instance = new StressHarness(path, start, hold);
             instance.modules.addAll(Sydney.MODULE_MANAGER.getModules());
             instance.modules.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
-            for (Module module : instance.modules) instance.originalState.add(module.isToggled());
+            // originalState is deliberately NOT captured here: ConfigManager only applies the
+            // user's saved config in onPostInitialize(), after this init hook. Capturing toggle
+            // states here records module defaults, and restoreStates() at the end of the run
+            // would then overwrite the loaded config with defaults on the next quit-save.
+            // The snapshot is taken at the first tick instead (see onTick phase 0).
 
             Sydney.EVENT_HANDLER.subscribe(instance);
             Sydney.LOGGER.info("[stress] harness armed: dir={} start={} hold={} modules={}",
@@ -98,6 +102,12 @@ public final class StressHarness implements IMinecraft {
         if (mc.player == null || mc.world == null) return;
 
         if (phase == 0) {
+            // Snapshot the config-loaded toggle state now that ConfigManager has run; restoring
+            // these values afterwards keeps the user's saved config intact.
+            if (originalState.isEmpty()) {
+                for (Module module : modules) originalState.add(module.isToggled());
+            }
+
             phase = 1;
             // Ticks (and therefore this harness) stop while a singleplayer game is paused, and
             // the window is never focused when the run is driven from a terminal.

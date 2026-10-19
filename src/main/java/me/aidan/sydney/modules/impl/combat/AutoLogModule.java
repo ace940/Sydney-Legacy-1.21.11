@@ -10,11 +10,11 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
 import net.minecraft.text.Text;
 
-@RegisterModule(name = "AutoLog", description = "Logs out automatically to avoid dying.", category = Module.Category.COMBAT)
+@RegisterModule(name = "AutoLog", description = "Logs out automatically to avoid dying.", category = Module.Category.COMBAT, toggled = false)
 public class AutoLogModule extends Module{
     public BooleanSetting healthCheck = new BooleanSetting("HealthCheck", "Checks if you are at a specific health to log out.", false);
     public NumberSetting health = new NumberSetting("Health", "The health the player must be at to log out.", new BooleanSetting.Visibility(healthCheck, true), 10, 0, 20);
-    public BooleanSetting totemCheck = new BooleanSetting("TotemCheck", "Checks if you ran out of totems to be able to log out.", true);
+    public BooleanSetting totemCheck = new BooleanSetting("TotemCheck", "Checks if you ran out of totems to be able to log out.", false);
     public NumberSetting totemCount = new NumberSetting("Totems", "The amount of totems to have in your inventory to log out.", new BooleanSetting.Visibility(totemCheck, true), 2, 0, 9);
     public BooleanSetting selfDisable = new BooleanSetting("SelfDisable", "Toggles off the module after logging out.", true);
 

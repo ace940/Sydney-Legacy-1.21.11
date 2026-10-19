@@ -90,7 +90,7 @@
       }
     },
     "ArrowTracers": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Width": 3.0,
         "Height": 6.0,
@@ -117,7 +117,7 @@
       }
     },
     "Atmosphere": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "ModifyTime": true,
         "Time": 200,
@@ -245,7 +245,7 @@
       "Settings": {
         "HealthCheck": false,
         "Health": 4,
-        "TotemCheck": true,
+        "TotemCheck": false,
         "Totems": 1,
         "SelfDisable": false,
         "ChatNotify": true,
@@ -372,7 +372,7 @@
       }
     },
     "BlockHighlight": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Animation": "Static",
         "Mode": "Both",
@@ -405,7 +405,7 @@
       }
     },
     "BreakHighlight": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Mode": "Outline",
         "FillColor": "255,0,0,40,false,false",
@@ -424,7 +424,7 @@
       }
     },
     "Chams": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Players": true,
         "Hostiles": true,
@@ -510,7 +510,7 @@
       }
     },
     "Crosshair": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Width": 1.0,
         "Height": 4.0,
@@ -524,7 +524,7 @@
       }
     },
     "DeathEffects": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Mode": "Lightning",
         "ChatNotify": true,
@@ -541,7 +541,7 @@
       }
     },
     "ESP": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Players": true,
         "Hostiles": false,
@@ -574,7 +574,7 @@
       }
     },
     "EntityModifier": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Players": true,
         "PlayerColor": "255,255,255,255,false,false",
@@ -716,7 +716,7 @@
       }
     },
     "FullBright": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Mode": "Gamma",
         "ChatNotify": true,
@@ -788,7 +788,7 @@
       }
     },
     "HandProgress": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "ModifyMainhand": true,
         "MainhandProgress": 1.0,
@@ -824,7 +824,7 @@
       }
     },
     "HoleESP": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Range": 20,
         "Asynchronous": true,
@@ -897,7 +897,7 @@
       }
     },
     "Icons": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Chorus": true,
         "ChorusColor": "192,147,212,255,false,false",
@@ -1049,7 +1049,7 @@
       }
     },
     "NameTags": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "GameMode": false,
         "Ping": true,
@@ -1126,7 +1126,7 @@
       }
     },
     "NoRender": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "HurtCamera": true,
         "Explosions": true,
@@ -1240,7 +1240,7 @@
       }
     },
     "PhaseESP": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Fill": "Normal",
         "FillHeight": 1.0,
@@ -1270,7 +1270,7 @@
       }
     },
     "PopChams": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Duration": 1500,
         "Mode": "Both",
@@ -1623,7 +1623,7 @@
       }
     },
     "TextESP": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Items": true,
         "Pearls": true,
@@ -1688,7 +1688,7 @@
       }
     },
     "Tracers": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "AntiBot": false,
         "Mode": "Distance",
@@ -1699,7 +1699,7 @@
       }
     },
     "Trajectories": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "LineColor": "0,255,170,120,false,false",
         "EntitiesMode": "Both",
@@ -1767,7 +1767,7 @@
       }
     },
     "VoidESP": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "Range": 12,
         "Asynchronous": true,
@@ -1783,7 +1783,7 @@
       }
     },
     "Waypoints": {
-      "Status": true,
+      "Status": false,
       "Settings": {
         "LogoutSpots": true,
         "Deaths": true,
