@@ -2,18 +2,22 @@
 """Validate a Sydney config against the module/setting names declared in source."""
 import json, os, re, sys, glob
 
-SRC = "Sydney-Legacy/src/main/java/me/aidan/sydney/modules/impl"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = os.path.join(ROOT, "src", "main", "java", "me", "aidan", "sydney", "modules", "impl")
 CFG = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser(
-    "~/Library/Application Support/minecraft/sydney/Configs/6b6t-ultimate.json")
+    "~/Library/Application Support/minecraft/Sydney/Configs/6b6t-ultimate.json")
+
+# Every module inherits these three settings from Module's constructor.
+BASE_SETTINGS = {"ChatNotify", "Drawn", "Bind"}
 
 modules = {}   # name -> set(settings)
-for path in glob.glob(SRC + "/**/*.java", recursive=True):
+for path in glob.glob(os.path.join(SRC, "**", "*.java"), recursive=True):
     text = open(path).read()
     m = re.search(r'@RegisterModule\([^)]*name\s*=\s*"([^"]+)"', text, re.S)
     if not m:
         continue
     name = m.group(1)
-    settings = set(re.findall(r'new\s+\w*Setting\(\s*"([^"]+)"', text))
+    settings = set(re.findall(r'new\s+\w*Setting\(\s*"([^"]+)"', text)) | BASE_SETTINGS
     modules[name] = settings
 
 cfg = json.load(open(CFG))
@@ -38,3 +42,5 @@ if unknown_mod: print("UNKNOWN MODULES:", unknown_mod)
 if unknown_set: print("UNKNOWN SETTINGS:", unknown_set)
 if missing: print("MISSING MODULES (defaults used):", missing)
 print("ENABLED:", ", ".join(sorted(enabled)))
+
+sys.exit(1 if (unknown_mod or unknown_set) else 0)

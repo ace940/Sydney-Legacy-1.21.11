@@ -57,15 +57,17 @@ Runtime mixin failures fixed in this pass:
 
 Helper scripts:
 
-- `sydney-port-tools/audit_mixins.py` — parses mixin annotations and compares handler
-  parameter lists with the mapped 1.21.11 classes (no JDK/`javap` needed).
-- `sydney-port-tools/validate_config.py` — checks a config's module/setting keys against
-  `@RegisterModule` / `Setting` names in source.
+- `tools/audit_mixins.py` — resolves every `@Mixin` target and injected method against the
+  loom-mapped 1.21.11 classes, including `*` wildcards, `<init>` and nested classes
+  (no JDK/`javap` needed). Run from the repo root with `python3 tools/audit_mixins.py`.
+- `tools/validate_config.py` — checks a config's module/setting keys against
+  `@RegisterModule` / `Setting` names in source (base `ChatNotify`/`Drawn`/`Bind` included).
+  Exits non-zero on unknown modules or settings.
 
 ## Config
 
 Active config: `~/Library/Application Support/minecraft/sydney/Configs/6b6t-ultimate.json`
-(`General.json` → `"Config": "6b6t-ultimate"`), 88 modules enabled.
+(`General.json` → `"Config": "6b6t-ultimate"`), 65 modules enabled.
 An identical copy is kept as `6b6t-ultimate-pristine.json`, because closing the game rewrites
 `6b6t-ultimate.json` from live state (`.config load 6b6t-ultimate-pristine` restores it).
 
